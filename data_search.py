@@ -33,10 +33,15 @@ def protein_record(record):
     prot_data=[]
     
     length_record=len(record)
+    
+    #Metodo de busqueda no eficiente pues evalua todas las linas, 
+    #pero funciona
     for line_number in range(length_record):
+        #Se buscan lineas con CDSs, luego se hace una busqueda justo adelante
+        #de esas lineas
         if "     CDS             " in record[line_number]:
             position=record[line_number].split()[1]
-            
+    
             for prot_line in range(line_number,length_record):
                 if "/transl_table" in record[prot_line]:
                     transl_table=record[prot_line][35:-1]
@@ -55,6 +60,7 @@ def protein_record(record):
                             prot_seq+=prote_seq_lines[21:-2]
                             break
                     break
+            #Se cargan los datos de cada proteina como tuplas a una lista
             prot_data.append((accession,prot_id,product,position,transl_table,prot_seq))
 
     return prot_data
